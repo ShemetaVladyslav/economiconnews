@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>EconomiconNews — Економічні новини України</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Georgia:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden}
+body{overflow-x:hidden;max-width:100vw}
+img,video,iframe{max-width:100%;height:auto}
+:root{
+  --blue:#1A56A0;--blue-dark:#0D3D7A;--blue-light:#E8F0FB;
+  --accent:#90C8F5;--bg:#F7F8FA;--white:#fff;
+  --text:#111;--text-sec:#555;--text-ter:#888;
+  --divider:#E0E3EA;--danger:#C0392B;--success:#1A7A4A;
+  --r:10px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--blue-dark);color:rgba(255,255,255,.7);font-size:.72rem;padding:.38rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.topbar-left{display:flex;gap:1.5rem;align-items:center}
+.topbar-right{display:flex;gap:1.25rem;align-items:center;font-weight:500}
+.topbar-market{display:flex;align-items:center;gap:.35rem}
+.topbar-val{color:#fff;font-weight:600}
+.topbar-chg{font-size:.65rem;border-radius:3px;padding:.05rem .3rem;font-weight:700}
+.chg-up{background:#1A7A4A;color:#fff}
+.chg-dn{background:#C0392B;color:#fff}
+.market-updated{color:rgba(255,255,255,.3);font-size:.62rem}
+
+/* ── NAV ── */
+nav{background:var(--blue);position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.2)}
+.nav-inner{max-width:1240px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1rem;height:58px}
+.logo{font-size:1.45rem;font-weight:800;color:#fff;text-decoration:none;display:flex;align-items:center;gap:.15rem;flex-shrink:0;cursor:pointer;letter-spacing:-.02em}
+.logo .en{color:var(--accent)}
+.logo .sub{font-size:.55em;font-weight:500;margin-left:.45rem;color:rgba(255,255,255,.5);letter-spacing:.01em}
+.nav-cats{display:flex;gap:.1rem;flex:1;overflow:hidden}
+.nav-cat{background:none;border:none;color:rgba(255,255,255,.72);font-size:.8rem;font-weight:500;padding:.4rem .7rem;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:all .15s}
+.nav-cat:hover,.nav-cat.active{background:rgba(255,255,255,.18);color:#fff}
+.nav-right{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.search-wrap{position:relative}
+.search-wrap input{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:100px;padding:.33rem .85rem .33rem 2rem;font-size:.8rem;width:165px;outline:none;font-family:'Inter',sans-serif;transition:all .25s}
+.search-wrap input::placeholder{color:rgba(255,255,255,.45)}
+.search-wrap input:focus{background:rgba(255,255,255,.2);width:205px}
+.search-icon{position:absolute;left:.62rem;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:rgba(255,255,255,.5);fill:none;pointer-events:none}
+.nav-btn{border:none;border-radius:100px;padding:.34rem .82rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+.btn-login{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.btn-login:hover{background:rgba(255,255,255,.2)}
+.btn-reg{background:#fff;color:var(--blue)}
+.btn-reg:hover{background:var(--accent)}
+.btn-user{background:rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;gap:.4rem;padding:.28rem .7rem .28rem .45rem}
+.btn-user .avatar{width:25px;height:25px;border-radius:50%;background:var(--accent);color:var(--blue-dark);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem}
+
+/* ── BREAKING TICKER ── */
+.breaking{background:var(--blue-dark);border-bottom:2px solid rgba(255,255,255,.08);padding:.42rem 0;display:flex;align-items:stretch;overflow:hidden;height:32px}
+.breaking-label{background:var(--danger);color:#fff;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:0 1rem;display:flex;align-items:center;flex-shrink:0;white-space:nowrap}
+.breaking-label span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;margin-right:.45rem;animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.ticker-outer{flex:1;overflow:hidden;display:flex;align-items:center;background:var(--blue-dark)}
+.ticker-track{display:flex;align-items:center;white-space:nowrap;will-change:transform}
+.ticker-track.running{animation:tickerRoll var(--ticker-dur,60s) linear infinite}
+@keyframes tickerRoll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{display:inline-flex;align-items:center;color:rgba(255,255,255,.78);font-size:.76rem;padding:0 1.4rem;cursor:pointer;transition:color .15s;text-decoration:none;flex-shrink:0}
+.ticker-item:hover{color:#fff}
+.ticker-sep{display:inline-block;color:rgba(255,255,255,.25);padding:0 .2rem;flex-shrink:0;font-size:.65rem}
+
+/* ── FULL-WIDTH HERO ── */
+.hero-outer{max-width:1240px;margin:1.5rem auto 0;padding:0 1.5rem}
+.hero-block{position:relative;border-radius:14px;overflow:hidden;height:460px;cursor:pointer;display:block;text-decoration:none}
+.hero-block img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
+.hero-block:hover img{transform:scale(1.03)}
+.hero-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to top,rgba(13,61,122,.95) 0%,rgba(13,61,122,.45) 48%,rgba(13,61,122,.1) 100%)}
+.hero-content{position:absolute;bottom:0;left:0;right:0;padding:2rem 2.25rem}
+.hero-cat{display:inline-block;background:var(--blue);color:#fff;border-radius:4px;padding:.13rem .6rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.65rem}
+.hero-content h2{font-size:clamp(1.35rem,2.6vw,2rem);font-weight:700;color:#fff;line-height:1.24;margin-bottom:.7rem;max-width:800px}
+.hero-meta{display:flex;gap:.85rem;align-items:center;flex-wrap:wrap;font-size:.76rem;color:rgba(255,255,255,.65)}
+.hero-meta .sep{opacity:.4}
+.hero-cta{margin-left:auto;background:var(--accent);color:var(--blue-dark);border-radius:100px;padding:.3rem .9rem;font-size:.75rem;font-weight:700;white-space:nowrap}
+
+/* ── LAYOUT ── */
+.main{max-width:1240px;margin:0 auto;padding:1.5rem 1.5rem 2rem;display:grid;grid-template-columns:1fr 308px;gap:1.75rem;min-width:0}
+.main>*{min-width:0}
+
+/* ── TABLET ≤920px ── */
+@media(max-width:920px){
+  .topbar{display:none}
+  .topbar-right,.nav-cats{display:none}
+  .main{grid-template-columns:1fr;padding:1.1rem}
+  .hero-block{height:320px}
+  .ap-body{grid-template-columns:1fr}
+  .ap-sidebar{display:none}
+  .btn-reg{display:none}
+  .nav-inner{padding:0 1rem;height:52px}
+  .logo .sub{display:none}
+  .search-wrap input{width:130px}
+  .search-wrap input:focus{width:155px}
+}
+
+/* ── MOBILE ≤600px ── */
+@media(max-width:600px){
+  /* Layout */
+  .hero-outer{margin:.6rem auto 0;padding:0 .75rem}
+  .hero-block{height:215px;border-radius:10px}
+  .hero-content{padding:.9rem 1rem}
+  .hero-content h2{font-size:1.05rem;margin-bottom:.4rem}
+  .hero-meta{font-size:.68rem;gap:.4rem}
+  .hero-cta{display:none}
+  .main{padding:.75rem .75rem 1.5rem;gap:.9rem;width:100%}
+  .news-grid{grid-template-columns:1fr;gap:.6rem}
+  .sec-label{margin-bottom:.6rem}
+  .breaking-label{padding:0 .65rem;font-size:.58rem;letter-spacing:.07em}
+  .ticker-item{padding:0 .85rem;font-size:.7rem}
+
+  /* Nav */
+  .nav-right{gap:.35rem}
+  .search-wrap input{width:100px}
+  .search-wrap input:focus{width:125px}
+  .btn-login{padding:.28rem .55rem;font-size:.72rem}
+
+  /* Cards */
+  .card-featured{grid-template-columns:1fr}
+  .card-featured .card-img{width:100%;height:175px}
+  .card-featured .card-body{padding:1.1rem 1rem}
+  .card-featured .card-title{font-size:1rem}
+
+  /* Article page */
+  #articlePage{padding:.75rem .75rem 2rem;width:100%;overflow-x:hidden}
+  .ap-body{grid-template-columns:1fr;width:100%}
+  .ap-back-btn{margin-bottom:.85rem;font-size:.75rem;padding:.28rem .7rem;max-width:100%}
+  .ap-hero{height:200px;width:100%}
+  .ap-inner{padding:1rem .9rem;overflow:hidden}
+  .ap-title{font-size:1.18rem;margin-bottom:.65rem}
+  .ap-meta{gap:.4rem .8rem;font-size:.69rem;margin-bottom:1rem;padding-bottom:1rem}
+  .ap-text{font-size:.94rem;line-height:1.78}
+  .ap-tags{margin-top:1rem;padding-top:.85rem}
+  .ap-actions{flex-wrap:wrap;gap:.4rem}
+  .share-label{margin-left:0;width:100%;margin-top:.15rem;font-size:.72rem}
+  .comment-form{flex-wrap:wrap}
+  .comment-form input{min-width:0;flex:1 1 120px}
+  .ap-comments .comment-item{gap:.45rem}
+  .ap-comments .comment-body{min-width:0;word-break:break-word}
+
+  /* Author page */
+  #authorPage{padding:.75rem .75rem 2rem;width:100%}
+  .author-header{padding:1.2rem 1rem;gap:.85rem}
+  .author-initials{width:50px;height:50px;font-size:1.2rem;flex-shrink:0}
+  .author-info h1{font-size:1.22rem}
+  .author-stats{gap:1rem;flex-wrap:wrap}
+
+  /* About page */
+  #aboutPage{padding:.75rem .75rem 2rem;width:100%}
+  .about-logo{padding:1.4rem 1.2rem 1.2rem;font-size:1.28rem}
+  .about-title{font-size:1.3rem;padding:1.4rem 1.2rem .2rem}
+  .about-body{padding:.8rem 1.2rem 1.2rem;font-size:.95rem}
+  .about-stats{flex-direction:column}
+  .about-stat-item{border-right:none;border-bottom:1px solid var(--divider);padding:1rem 1.2rem}
+  .about-stat-item:last-child{border-bottom:none}
+  .about-stat-item strong{font-size:1.3rem}
+
+  /* Auth bottom-sheet */
+  .auth-bg{align-items:flex-end;padding:0}
+  .auth-card{border-radius:20px 20px 0 0;max-width:100%;width:100%;padding:1.5rem 1.2rem calc(1.8rem + env(safe-area-inset-bottom,0px))}
+  .modal-bg{padding:.35rem}
+  .modal-hero{height:185px}
+  .modal-body{padding:1.1rem .95rem}
+  .modal-title{font-size:1.18rem}
+
+  /* Toast */
+  .toast{left:.65rem;right:.65rem;bottom:1.2rem;max-width:none;font-size:.79rem;padding:.65rem .9rem}
+
+  /* Pagination */
+  .page-btn{min-width:40px;height:40px;font-size:.85rem}
+
+  /* Sidebar */
+  .sidebar-block{margin-bottom:.65rem}
+  .market-row{font-size:.78rem}
+
+  /* Cat header */
+  .cat-header{padding:.8rem .9rem}
+
+  /* Footer */
+  footer{padding:1.75rem 1rem 1rem}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:1rem}
+  .footer-bottom{flex-direction:column;text-align:center;gap:.3rem;font-size:.68rem}
+
+  /* Admin */
+  .admin-body{padding:.75rem}
+  .admin-panel{width:100%}
+  .admin-table{font-size:.73rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .admin-table th,.admin-table td{padding:.36rem .46rem}
+  .stat-cards{gap:.55rem}
+  .stat-card .val{font-size:1.28rem}
+  .form-row{grid-template-columns:1fr}
+  .admin-tabs{gap:.2rem}
+  .admin-tab{font-size:.73rem;padding:.28rem .5rem}
+
+  /* iOS input zoom prevention */
+  .field input,.comment-form input,#apCommentInput,#nlEmail,
+  .admin-form input,.admin-form textarea,.admin-form select,
+  .search-wrap input,#adminUserSearch{font-size:16px!important}
+}
+
+/* ── SMALL PHONE ≤390px ── */
+@media(max-width:390px){
+  .logo{font-size:1.18rem}
+  .nav-inner{gap:.3rem;padding:0 .7rem}
+  .search-wrap{display:none}
+  .btn-login{padding:.26rem .5rem;font-size:.7rem}
+  .hero-block{height:185px}
+  .hero-content h2{font-size:.95rem}
+  .ap-title{font-size:1.12rem}
+  .ap-hero{height:170px}
+  .footer-inner{grid-template-columns:1fr}
+  .author-header{flex-wrap:wrap}
+  .about-stats{flex-direction:column}
+}
+
+/* ── SEC LABEL ── */
+.sec-label{font-size:.67rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--text-ter);margin-bottom:.9rem;display:flex;align-items:center;gap:.65rem}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--divider)}
+
+/* ── NEWS GRID ── */
+.news-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-bottom:1.5rem}
+@media(max-width:560px){.news-grid{grid-template-columns:1fr}}
+
+/* first card – wide/featured */
+.card-featured{grid-column:1/-1;display:grid;grid-template-columns:360px 1fr;min-height:240px;align-items:stretch}
+.card-featured .card-img{width:360px;height:100%;min-height:220px;object-fit:cover}
+.card-featured .card-body{display:flex;flex-direction:column;justify-content:center;padding:1.85rem 2.1rem;gap:0}
+.card-featured .card-title{font-size:1.22rem;font-weight:700;line-height:1.3;margin-bottom:.7rem}
+.card-featured .card-excerpt{-webkit-line-clamp:4;font-size:.86rem;line-height:1.6;margin-bottom:.75rem}
+@media(max-width:640px){.card-featured{grid-template-columns:1fr;grid-column:1/-1}.card-featured .card-img{width:100%;height:200px}}
+
+/* ── CARD ── */
+.card{background:var(--white);border-radius:var(--r);box-shadow:0 1px 3px rgba(0,0,0,.06),0 2px 12px rgba(0,0,0,.04);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;text-decoration:none;display:block;color:inherit}
+.card:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(26,86,160,.14)}
+.card-img{width:100%;height:155px;object-fit:cover;display:block}
+.card-body{padding:.95rem}
+.cat-pill{display:inline-block;background:var(--blue-light);color:var(--blue);border-radius:100px;padding:.1rem .5rem;font-size:.67rem;font-weight:700;margin-bottom:.45rem;cursor:pointer;transition:all .15s}
+.cat-pill:hover{background:var(--blue);color:#fff}
+.card-title{font-size:.9rem;font-weight:600;line-height:1.35;margin-bottom:.45rem}
+.card-excerpt{font-size:.78rem;color:var(--text-sec);font-family:Georgia,serif;line-height:1.5;margin-bottom:.55rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{display:flex;align-items:center;gap:.65rem;font-size:.7rem;color:var(--text-ter);flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:.22rem}
+.meta-item svg{width:11px;height:11px;stroke:currentColor;fill:none;flex-shrink:0}
+
+/* ── SKELETON ── */
+.skeleton{background:linear-gradient(90deg,var(--divider) 25%,var(--bg) 50%,var(--divider) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--r);height:250px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:3.5rem 2rem;color:var(--text-ter)}
+.empty-state .icon{font-size:2rem;margin-bottom:.85rem;color:var(--divider)}
+.empty-state h3{font-size:1rem;margin-bottom:.4rem;color:var(--text-sec)}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;gap:.4rem;justify-content:center;margin:1rem 0 .5rem}
+.page-btn{min-width:34px;height:34px;border-radius:8px;border:1px solid var(--divider);background:var(--white);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text-sec);transition:all .15s;padding:0 .5rem}
+.page-btn.active,.page-btn:hover:not(:disabled){background:var(--blue);color:#fff;border-color:var(--blue)}
+.page-btn:disabled{cursor:default;opacity:.5}
+
+/* ── SIDEBAR ── */
+.sidebar-block{background:var(--white);border-radius:var(--r);box-shadow:0 1px 3px rgba(0,0,0,.06);padding:1.15rem;margin-bottom:1.3rem}
+.sb-title{font-size:.67rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--text-ter);margin-bottom:.9rem;display:flex;align-items:center;gap:.55rem}
+.sb-title::after{content:'';flex:1;height:1px;background:var(--divider)}
+.market-row{display:flex;justify-content:space-between;align-items:center;padding:.46rem 0;border-bottom:1px solid var(--divider);font-size:.82rem}
+.market-row:last-child{border-bottom:none}
+.market-name{font-weight:600;color:var(--text-sec)}
+.market-right{display:flex;align-items:center;gap:.45rem}
+.market-val{font-weight:700}
+.market-val.up{color:var(--success)}
+.market-val.dn{color:var(--danger)}
+.market-chg{font-size:.67rem;font-weight:700;border-radius:4px;padding:.06rem .32rem}
+.chg-up-bg{background:#e8f5ee;color:var(--success)}
+.chg-dn-bg{background:#fde8e8;color:var(--danger)}
+.market-refresh{font-size:.63rem;color:var(--text-ter);text-align:right;margin-top:.4rem;display:flex;align-items:center;justify-content:flex-end;gap:.3rem}
+.refresh-dot{width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.market-loader{font-size:.76rem;color:var(--text-ter);text-align:center;padding:.5rem 0}
+
+.trend-item{display:flex;gap:.65rem;padding:.52rem 0;border-bottom:1px solid var(--divider);cursor:pointer}
+.trend-item:last-child{border-bottom:none;padding-bottom:0}
+.trend-num{font-size:1.05rem;font-weight:800;color:var(--blue-light);line-height:1;flex-shrink:0;width:20px;margin-top:.1rem}
+.trend-body{flex:1;min-width:0}
+.trend-title{font-size:.82rem;font-weight:600;line-height:1.3;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trend-meta{font-size:.7rem;color:var(--text-ter);margin-top:.12rem}
+.trend-item:hover .trend-title{color:var(--blue)}
+
+.tag-cloud{display:flex;flex-wrap:wrap;gap:.35rem}
+.tag-btn{background:var(--bg);border:1px solid var(--divider);border-radius:100px;padding:.22rem .65rem;font-size:.73rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text-sec);transition:all .15s}
+.tag-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* ── CATEGORY HEADER ── */
+.cat-header{background:var(--white);border-bottom:1px solid var(--divider);padding:1.2rem 1.5rem;display:none}
+.cat-header-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:.9rem}
+.cat-icon{width:44px;height:44px;border-radius:10px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.cat-count{margin-left:auto;background:var(--blue-light);color:var(--blue);border-radius:100px;padding:.2rem .7rem;font-size:.74rem;font-weight:700}
+
+/* ── ARTICLE MODAL ── */
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(13,61,122,.5);backdrop-filter:blur(5px);z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:16px;max-width:780px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.28);overflow:hidden;transform:translateY(26px);transition:transform .3s}
+.modal-bg.open .modal{transform:none}
+.modal-hero{width:100%;height:275px;object-fit:cover;display:block}
+.modal-body{padding:2.1rem}
+.modal-cat-tag{display:inline-block;background:var(--blue-light);color:var(--blue);border-radius:4px;padding:.12rem .55rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem;cursor:pointer}
+.modal-cat-tag:hover{background:var(--blue);color:#fff}
+.modal-title{font-size:1.65rem;font-weight:700;line-height:1.25;margin-bottom:.9rem}
+.modal-meta{display:flex;gap:1.25rem;align-items:center;font-size:.78rem;color:var(--text-ter);margin-bottom:1.3rem;padding-bottom:1.3rem;border-bottom:1px solid var(--divider);flex-wrap:wrap}
+.modal-meta .meta-item svg{width:12px;height:12px}
+.modal-meta strong{color:var(--text-sec)}
+.modal-text{font-family:Georgia,serif;font-size:1rem;line-height:1.85;color:var(--text-sec)}
+.modal-text p{margin-bottom:1.2rem}
+.modal-text strong{color:var(--text);font-family:'Inter',sans-serif}
+.modal-close{position:absolute;top:.85rem;right:.85rem;width:33px;height:33px;border-radius:50%;background:rgba(0,0,0,.35);border:none;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.modal-close:hover{background:rgba(0,0,0,.55)}
+.modal-wrap{position:relative}
+.modal-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid var(--divider)}
+.modal-tag{background:var(--blue-light);color:var(--blue);border-radius:100px;padding:.17rem .6rem;font-size:.7rem;font-weight:600}
+.modal-actions{display:flex;align-items:center;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap}
+.bookmark-btn{display:flex;align-items:center;gap:.35rem;border:1.5px solid var(--divider);border-radius:100px;padding:.3rem .78rem;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text-sec);background:var(--white);transition:all .15s}
+.bookmark-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;flex-shrink:0}
+.bookmark-btn:hover,.bookmark-btn.saved{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.share-label{font-size:.76rem;color:var(--text-ter);font-weight:500;margin-left:auto}
+.share-btn{border:none;border-radius:100px;padding:.27rem .72rem;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.sh-t{background:#1DA1F2;color:#fff}
+.sh-f{background:#1877F2;color:#fff}
+.sh-l{background:#0A66C2;color:#fff}
+
+/* ── COMMENTS ── */
+.comments-section{margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--divider)}
+.comments-section h4{font-size:.83rem;font-weight:700;margin-bottom:1rem;color:var(--text-sec)}
+.comment-item{display:flex;gap:.65rem;margin-bottom:.85rem}
+.comment-avatar{width:31px;height:31px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0}
+.comment-body{flex:1}
+.comment-name{font-size:.78rem;font-weight:700}
+.comment-text{font-size:.82rem;color:var(--text-sec);margin-top:.12rem}
+.comment-date{font-size:.67rem;color:var(--text-ter);margin-top:.08rem}
+.comment-form{display:flex;gap:.5rem;margin-top:1rem}
+.comment-form input{flex:1;border:1.5px solid var(--divider);border-radius:8px;padding:.48rem .72rem;font-size:.83rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.comment-form input:focus{border-color:var(--blue)}
+.comment-form button{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:.48rem .9rem;font-weight:600;font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;transition:background .15s}
+.comment-form button:hover{background:var(--blue-dark)}
+
+/* ── AUTH MODAL ── */
+.auth-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(13,61,122,.6);backdrop-filter:blur(6px);z-index:600;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.auth-bg.open{opacity:1;pointer-events:all}
+.auth-card{background:var(--white);border-radius:16px;width:100%;max-width:385px;padding:2.2rem;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:scale(.95);transition:transform .25s;position:relative}
+.auth-bg.open .auth-card{transform:none}
+.auth-card h2{font-size:1.32rem;font-weight:700;margin-bottom:.3rem}
+.auth-card p{font-size:.82rem;color:var(--text-sec);margin-bottom:1.45rem}
+.field{margin-bottom:.95rem}
+.field label{display:block;font-size:.74rem;font-weight:600;color:var(--text-sec);margin-bottom:.28rem}
+.field input{width:100%;border:1.5px solid var(--divider);border-radius:8px;padding:.58rem .78rem;font-size:.88rem;font-family:'Inter',sans-serif;outline:none;color:var(--text);transition:border-color .2s}
+.field input:focus{border-color:var(--blue)}
+.field .err{font-size:.71rem;color:var(--danger);margin-top:.22rem}
+.btn-primary{width:100%;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:.72rem;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;margin-top:.35rem}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.auth-switch{text-align:center;font-size:.79rem;color:var(--text-sec);margin-top:.85rem}
+.auth-switch a{color:var(--blue);font-weight:600;cursor:pointer}
+.modal-close-abs{position:absolute;top:.78rem;right:.78rem;width:29px;height:29px;border-radius:50%;background:var(--bg);border:1px solid var(--divider);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;color:var(--text-sec)}
+
+/* ── USER DROPDOWN ── */
+.user-menu{position:relative}
+.user-dropdown{position:absolute;right:0;top:calc(100% + .5rem);background:var(--white);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.15);border:1px solid var(--divider);min-width:175px;overflow:hidden;display:none;z-index:300}
+.user-dropdown.open{display:block}
+.user-dd-item{display:block;width:100%;padding:.62rem .95rem;font-size:.82rem;font-weight:500;color:var(--text);background:none;border:none;text-align:left;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+.user-dd-item:hover{background:var(--blue-light);color:var(--blue)}
+.user-dd-item.danger{color:var(--danger)}
+.user-dd-item.danger:hover{background:#fde8e8}
+.user-dd-sep{height:1px;background:var(--divider)}
+
+/* ── ADMIN PANEL ── */
+.admin-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:700;display:flex;align-items:stretch;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .25s}
+.admin-bg.open{opacity:1;pointer-events:all}
+.admin-panel{background:var(--white);width:min(900px,100%);height:100%;overflow-y:auto;box-shadow:-10px 0 40px rgba(0,0,0,.2);display:flex;flex-direction:column;transform:translateX(60px);transition:transform .3s}
+.admin-bg.open .admin-panel{transform:none}
+.admin-header{background:var(--blue-dark);color:#fff;padding:1.2rem 1.7rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1}
+.admin-header h2{font-size:1.05rem;font-weight:700}
+.admin-close{background:rgba(255,255,255,.14);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1.05rem;display:flex;align-items:center;justify-content:center}
+.admin-body{padding:1.5rem;flex:1}
+.admin-tabs{display:flex;gap:.3rem;margin-bottom:1.45rem;border-bottom:1px solid var(--divider);padding-bottom:.7rem;flex-wrap:wrap}
+.admin-tab{border:none;background:none;font-family:'Inter',sans-serif;font-size:.81rem;font-weight:600;color:var(--text-ter);cursor:pointer;padding:.33rem .72rem;border-radius:6px;transition:all .15s}
+.admin-tab.active{background:var(--blue-light);color:var(--blue)}
+.stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.5rem}
+@media(max-width:580px){.stat-cards{grid-template-columns:repeat(2,1fr)}}
+.stat-card{background:var(--bg);border-radius:8px;padding:.95rem;text-align:center}
+.stat-card .val{font-size:1.55rem;font-weight:800;color:var(--blue)}
+.stat-card .lbl{font-size:.7rem;color:var(--text-ter);margin-top:.18rem}
+.admin-table{width:100%;border-collapse:collapse;font-size:.81rem}
+.admin-table th{background:var(--bg);padding:.52rem .72rem;text-align:left;font-weight:700;color:var(--text-sec);border-bottom:2px solid var(--divider)}
+.admin-table td{padding:.52rem .72rem;border-bottom:1px solid var(--divider);vertical-align:middle}
+.admin-table tr:hover td{background:var(--blue-light)}
+.badge-pub{background:#e8f5ee;color:var(--success);border-radius:4px;padding:.09rem .38rem;font-size:.67rem;font-weight:700}
+.badge-dft{background:#fff3e0;color:#e65100;border-radius:4px;padding:.09rem .38rem;font-size:.67rem;font-weight:700}
+.act-btn{border:none;border-radius:5px;padding:.2rem .55rem;font-size:.69rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+.act-edit{background:var(--blue-light);color:var(--blue)}
+.act-del{background:#fde8e8;color:var(--danger)}
+.act-edit:hover{background:var(--blue);color:#fff}
+.act-del:hover{background:var(--danger);color:#fff}
+.admin-form{display:grid;gap:.85rem}
+.admin-form input,.admin-form textarea,.admin-form select{width:100%;border:1.5px solid var(--divider);border-radius:8px;padding:.52rem .78rem;font-size:.84rem;font-family:'Inter',sans-serif;outline:none;color:var(--text);transition:border-color .2s}
+.admin-form input:focus,.admin-form textarea:focus,.admin-form select:focus{border-color:var(--blue)}
+.admin-form textarea{resize:vertical;min-height:115px}
+.admin-form label{font-size:.73rem;font-weight:600;color:var(--text-sec);display:block;margin-bottom:.22rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.72rem}
+.admin-save{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:.62rem 1.4rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;font-size:.85rem;transition:background .15s}
+.admin-save:hover{background:var(--blue-dark)}
+.admin-cancel{background:var(--bg);color:var(--text-sec);border:1.5px solid var(--divider);border-radius:8px;padding:.62rem 1.2rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;font-size:.85rem}
+
+/* ── ABOUT PAGE ── */
+#aboutPage{display:none;padding:1.5rem 1.5rem 4rem}
+.about-wrap{max-width:780px;margin:0 auto}
+.about-card{background:var(--white);border-radius:16px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.08)}
+.about-logo{background:var(--blue-dark);padding:2rem 2.5rem 1.6rem;font-size:1.55rem;font-weight:800;color:#fff;letter-spacing:-.02em;display:flex;align-items:center}
+.about-title{font-size:1.65rem;font-weight:700;padding:1.8rem 2.5rem .2rem;color:var(--text)}
+.about-body{padding:.9rem 2.5rem 1.5rem;font-family:Georgia,serif;font-size:1rem;line-height:1.85;color:var(--text-sec)}
+.about-body p{margin-bottom:1.1rem}
+.about-body p:last-child{margin-bottom:0}
+.about-stats{display:flex;gap:0;border-top:1px solid var(--divider)}
+.about-stat-item{flex:1;text-align:center;padding:1.4rem 1rem;border-right:1px solid var(--divider)}
+.about-stat-item:last-child{border-right:none}
+.about-stat-item strong{display:block;font-size:1.45rem;font-weight:800;color:var(--blue)}
+.about-stat-item span{font-size:.75rem;color:var(--text-ter);margin-top:.15rem;display:block}
+@media(max-width:600px){
+  .about-title{font-size:1.3rem;padding:1.4rem 1.2rem .2rem}
+  .about-body{padding:.8rem 1.2rem 1.2rem;font-size:.95rem}
+  .about-logo{padding:1.4rem 1.2rem 1.2rem}
+  .about-stat-item strong{font-size:1.2rem}
+}
+
+/* ── AUTHOR PAGE ── */
+#authorPage{display:none;padding:1.5rem 1.5rem 4rem;max-width:1240px;margin:0 auto}
+.author-header{background:var(--white);border-radius:14px;padding:2rem 2.25rem;margin-bottom:1.75rem;box-shadow:0 2px 16px rgba(0,0,0,.07);display:flex;align-items:center;gap:1.5rem}
+.author-initials{width:64px;height:64px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.55rem;font-weight:800;flex-shrink:0}
+.author-info{flex:1}
+.author-info h1{font-size:1.65rem;font-weight:700;margin-bottom:.4rem}
+.author-stats{display:flex;gap:1.5rem;margin-top:.6rem;font-size:.8rem;color:var(--text-ter)}
+.author-stat strong{color:var(--text);font-size:1.05rem;display:block;font-weight:700}
+.author-link{font-size:.78rem;color:var(--blue);cursor:pointer;font-weight:600;text-decoration:none}
+.author-link:hover{text-decoration:underline}
+
+/* ── ARTICLE PAGE ── */
+#articlePage{display:none;padding:1.5rem 1.5rem 4rem;max-width:1240px;margin:0 auto;width:100%;overflow-x:hidden}
+.ap-back-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--divider);border-radius:100px;padding:.32rem .9rem;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text-sec);transition:all .15s;margin-bottom:1.5rem}
+.ap-back-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.ap-body{display:grid;grid-template-columns:1fr 308px;gap:1.75rem;align-items:start;min-width:0}
+@media(max-width:920px){.ap-body{grid-template-columns:1fr}}
+.ap-card{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.07);min-width:0;width:100%}
+.ap-hero{width:100%;height:380px;object-fit:cover;display:block}
+.ap-inner{padding:2rem 2.25rem;min-width:0;overflow:hidden}
+.ap-cat-tag{display:inline-block;background:var(--blue-light);color:var(--blue);border-radius:4px;padding:.12rem .55rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem;cursor:pointer;transition:all .15s}
+.ap-cat-tag:hover{background:var(--blue);color:#fff}
+.ap-title{font-size:1.85rem;font-weight:700;line-height:1.22;margin-bottom:.95rem;color:var(--text);word-break:break-word;overflow-wrap:break-word}
+.ap-meta{display:flex;gap:.85rem 1.25rem;align-items:center;font-size:.78rem;color:var(--text-ter);margin-bottom:1.5rem;padding-bottom:1.3rem;border-bottom:1px solid var(--divider);flex-wrap:wrap}
+.ap-meta strong{color:var(--text-sec)}
+.ap-meta .meta-item svg{width:12px;height:12px}
+.ap-text{font-family:Georgia,serif;font-size:1.02rem;line-height:1.9;color:var(--text-sec);word-break:break-word;overflow-wrap:break-word}
+.ap-text p{margin-bottom:1.25rem}
+.ap-text strong{color:var(--text);font-family:'Inter',sans-serif}
+.ap-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid var(--divider)}
+.ap-tag{background:var(--blue-light);color:var(--blue);border-radius:100px;padding:.17rem .6rem;font-size:.7rem;font-weight:600}
+.ap-actions{display:flex;align-items:center;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap}
+.ap-comments{margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--divider)}
+.ap-comments h4{font-size:.83rem;font-weight:700;margin-bottom:1rem;color:var(--text-sec)}
+.ap-sidebar{position:sticky;top:70px;display:flex;flex-direction:column;gap:0;min-width:0}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.75rem;right:1.75rem;background:var(--blue-dark);color:#fff;border-radius:10px;padding:.78rem 1.15rem;font-size:.84rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.28);z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:310px}
+.toast.show{transform:none;opacity:1}
+
+/* ── FOOTER ── */
+footer{background:var(--blue-dark);color:rgba(255,255,255,.62);padding:2.75rem 1.5rem 1.2rem;margin-top:2.5rem}
+.footer-inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:1.7rem}
+.footer-brand p{font-size:.79rem;line-height:1.65;margin-top:.6rem}
+footer h4{color:#fff;font-size:.76rem;font-weight:700;margin-bottom:.78rem;text-transform:uppercase;letter-spacing:.08em}
+footer ul{list-style:none}
+footer li{margin-bottom:.42rem}
+footer a{color:rgba(255,255,255,.52);font-size:.79rem;text-decoration:none;cursor:pointer;transition:color .15s}
+footer a:hover{color:var(--accent)}
+.footer-bottom{max-width:1240px;margin:1.7rem auto 0;padding-top:1.05rem;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;font-size:.7rem}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span id="topDate"></span>
+  </div>
+  <div class="topbar-right" id="topbarMarkets">
+    <span class="market-loader" style="color:rgba(255,255,255,.45)">Завантаження ринків...</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="showHome()">
+      <span class="en">E</span><span>N</span><span class="sub">EconomiconNews</span>
+    </div>
+    <div class="nav-cats">
+      <button class="nav-cat active" onclick="filterCat('all',this)">Всі новини</button>
+      <button class="nav-cat" onclick="filterCat('Ринки',this)">Ринки</button>
+      <button class="nav-cat" onclick="filterCat('Банки',this)">Банки</button>
+      <button class="nav-cat" onclick="filterCat('Інвестиції',this)">Інвестиції</button>
+      <button class="nav-cat" onclick="filterCat('Крипто',this)">Крипто</button>
+      <button class="nav-cat" onclick="filterCat('Нерухомість',this)">Нерухомість</button>
+      <button class="nav-cat" onclick="filterCat('Технології',this)">Технології</button>
+    </div>
+    <div class="nav-right">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Пошук..." id="searchInput" oninput="debounceSearch(this.value)"/>
+      </div>
+      <div id="navAuth">
+        <button class="nav-btn btn-login" onclick="openAuth('login')">Увійти</button>
+        <button class="nav-btn btn-reg" onclick="openAuth('reg')">Реєстрація</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- BREAKING TICKER -->
+<div class="breaking">
+  <div class="breaking-label"><span></span>Терміново</div>
+  <div class="ticker-outer">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+</div>
+
+<!-- CAT HEADER -->
+<div class="cat-header" id="catHeader">
+  <div class="cat-header-inner">
+    <div class="cat-icon" id="catIcon"></div>
+    <div>
+      <h1 id="catTitle" style="font-size:1.3rem;font-weight:700"></h1>
+      <p id="catDesc" style="font-size:.82rem;color:var(--text-sec)"></p>
+    </div>
+    <span class="cat-count" id="catCount"></span>
+  </div>
+</div>
+
+<!-- FULL-WIDTH HERO (home only) -->
+<div class="hero-outer" id="heroOuter" style="display:none">
+  <a class="hero-block" id="heroBlock" href="#" onclick="return false">
+    <img id="heroImg" src="" alt=""/>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-cat" id="heroCat"></span>
+      <h2 id="heroTitle"></h2>
+      <div class="hero-meta">
+        <span id="heroAuthor"></span>
+        <span class="sep">·</span>
+        <span id="heroDate"></span>
+        <span class="sep">·</span>
+        <span id="heroViews"></span>
+        <span class="hero-cta">Читати</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- MAIN GRID + SIDEBAR -->
+<div class="main">
+  <div>
+    <div class="sec-label" id="gridLabel">Останні новини</div>
+    <div class="news-grid" id="newsGrid">
+      <div class="skeleton"></div><div class="skeleton"></div>
+      <div class="skeleton"></div><div class="skeleton"></div>
+      <div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+  <aside>
+    <div class="sidebar-block">
+      <div class="sb-title">Ринки онлайн</div>
+      <div id="sideMarkets"><div class="market-loader">Завантаження...</div></div>
+      <div class="market-refresh"><span class="refresh-dot"></span><span id="marketRefreshTime">оновлення...</span></div>
+    </div>
+    <div class="sidebar-block">
+      <div class="sb-title">Популярне</div>
+      <div id="trendingList"><div class="market-loader">Завантаження...</div></div>
+    </div>
+    <div class="sidebar-block">
+      <div class="sb-title">Теми</div>
+      <div class="tag-cloud">
+        <button class="tag-btn" onclick="filterCat('Ринки',null)">Ринки</button>
+        <button class="tag-btn" onclick="filterCat('Банки',null)">Банки</button>
+        <button class="tag-btn" onclick="filterCat('Крипто',null)">Крипто</button>
+        <button class="tag-btn" onclick="filterCat('Інвестиції',null)">Інвестиції</button>
+        <button class="tag-btn" onclick="filterCat('Нерухомість',null)">Нерухомість</button>
+        <button class="tag-btn" onclick="filterCat('Технології',null)">Технології</button>
+        <button class="tag-btn">МВФ</button><button class="tag-btn">НБУ</button>
+        <button class="tag-btn">ВВП</button><button class="tag-btn">Інфляція</button>
+        <button class="tag-btn">Bitcoin</button><button class="tag-btn">IPO</button>
+        <button class="tag-btn">ЄС</button><button class="tag-btn">Відновлення</button>
+      </div>
+    </div>
+    <div class="sidebar-block" style="background:linear-gradient(135deg,var(--blue-dark),var(--blue))">
+      <div class="sb-title" style="color:rgba(255,255,255,.5)">Розсилка</div>
+      <p style="font-size:.81rem;margin-bottom:.82rem;color:rgba(255,255,255,.8)">Отримуйте добірку головних новин щоранку о 08:00</p>
+      <input type="email" placeholder="ваш@email.com" id="nlEmail" style="width:100%;border:none;border-radius:8px;padding:.52rem .78rem;font-size:.81rem;font-family:'Inter',sans-serif;margin-bottom:.52rem;outline:none;color:var(--text)"/>
+      <button onclick="subscribe()" style="width:100%;background:var(--accent);color:var(--blue-dark);border:none;border-radius:8px;padding:.52rem;font-weight:700;font-size:.81rem;cursor:pointer;font-family:'Inter',sans-serif">Підписатись</button>
+    </div>
+  </aside>
+</div>
+
+<!-- AUTHOR PAGE (URL-routed) -->
+<div id="authorPage" style="display:none">
+  <button class="ap-back-btn" onclick="goBackFromAuthor()">&#8592; Назад до новин</button>
+  <div class="author-header">
+    <div class="author-initials" id="authorInitials">?</div>
+    <div class="author-info">
+      <h1 id="authorNameTitle">...</h1>
+      <div class="author-stats">
+        <div class="author-stat"><strong id="authorArticleCount">—</strong>статей</div>
+        <div class="author-stat"><strong id="authorViewCount">—</strong>переглядів</div>
+      </div>
+    </div>
+  </div>
+  <div class="sec-label" style="margin-bottom:1rem">Публікації автора</div>
+  <div class="news-grid" id="authorGrid"></div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="aboutPage" style="display:none">
+  <div class="about-wrap">
+    <button class="ap-back-btn" onclick="goBackFromAbout()">&#8592; Назад до новин</button>
+    <div class="about-card">
+      <div class="about-logo">
+        <span class="en" style="color:var(--accent)">E</span><span>N</span>
+        <span style="font-size:.55em;font-weight:500;margin-left:.4rem;color:rgba(255,255,255,.55)">EconomiconNews</span>
+      </div>
+      <h1 class="about-title">Про нас</h1>
+      <div class="about-body">
+        <p>EconomiconNews - спеціалізований медіапортал економічних новин України. Наша редакція щодня відстежує ключові події на фінансових ринках, у банківському секторі, сферах інвестицій, нерухомості та технологій. Ми надаємо оперативну та перевірену інформацію для підприємців, інвесторів і всіх, хто стежить за економічним розвитком країни.</p>
+        </div>
+      <div class="about-stats">
+        <div class="about-stat-item"><strong>2026</strong><span>рік заснування</span></div>
+        <div class="about-stat-item"><strong>7</strong><span>рубрик</span></div>
+        <div class="about-stat-item"><strong>Щодня</strong><span>свіжі новини</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLE PAGE (URL-routed) -->
+<div id="articlePage" style="display:none">
+  <button class="ap-back-btn" onclick="goBack()">&#8592; Назад до новин</button>
+  <div class="ap-body">
+    <div class="ap-card">
+      <img id="apImg" class="ap-hero" src="" alt=""/>
+      <div class="ap-inner">
+        <span id="apCat" class="ap-cat-tag" onclick="apFilterCat()"></span>
+        <h1 id="apTitle" class="ap-title"></h1>
+        <div id="apMeta" class="ap-meta"></div>
+        <div id="apText" class="ap-text"></div>
+        <div id="apTags" class="ap-tags"></div>
+        <div id="apActions" class="ap-actions"></div>
+        <div id="apComments" class="ap-comments"></div>
+      </div>
+    </div>
+    <div class="ap-sidebar">
+      <div class="sidebar-block">
+        <div class="sb-title">Ринки онлайн</div>
+        <div id="apSideMarkets"><div class="market-loader">Завантаження...</div></div>
+        <div class="market-refresh"><span class="refresh-dot"></span><span id="apMarketTime">оновлення...</span></div>
+      </div>
+      <div class="sidebar-block">
+        <div class="sb-title">Популярне</div>
+        <div id="apTrendingList"><div class="market-loader">Завантаження...</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo" onclick="showHome()" style="font-size:1.3rem">
+        <span class="en">E</span><span>N</span><span class="sub">EconomiconNews</span>
+      </div>
+      <p>Спеціалізований портал економічних новин України. Об'єктивно. Оперативно. Зрозуміло.</p>
+    </div>
+    <div><h4>Рубрики</h4><ul>
+      <li><a onclick="filterCat('Ринки',null)">Фондові ринки</a></li>
+      <li><a onclick="filterCat('Банки',null)">Банківський сектор</a></li>
+      <li><a onclick="filterCat('Інвестиції',null)">Інвестиції</a></li>
+      <li><a onclick="filterCat('Крипто',null)">Криптовалюти</a></li>
+      <li><a onclick="filterCat('Нерухомість',null)">Нерухомість</a></li>
+    </ul></div>
+    <div><h4>Компанія</h4><ul>
+      <li><a onclick="openAbout()">Про нас</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 <span style="color:var(--accent)">EconomiconNews</span>. Всі права захищені.</span>
+    <span>Дані ринків оновлюються кожні 5 хв. Не є фінансовою порадою.</span>
+  </div>
+</footer>
+
+<!-- ARTICLE MODAL -->
+<div class="modal-bg" id="articleModal" onclick="bgClose(event,'articleModal')">
+  <div class="modal-wrap">
+    <button class="modal-close" onclick="closeModal('articleModal')">&#x2715;</button>
+    <div class="modal">
+      <img class="modal-hero" id="modalImg" src="" alt=""/>
+      <div class="modal-body">
+        <span class="modal-cat-tag" id="modalCat" onclick="filterCatFromModal()"></span>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-meta">
+          <span class="meta-item">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <strong id="modalAuthor"></strong>
+          </span>
+          <span class="meta-item">
+            <svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <strong id="modalDate"></strong>
+          </span>
+          <span class="meta-item">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <strong id="modalViews"></strong>
+          </span>
+          <span class="meta-item">
+            <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <strong id="modalRead"></strong>
+          </span>
+        </div>
+        <div class="modal-text" id="modalText"></div>
+        <div class="modal-tags" id="modalTags"></div>
+        <div class="modal-actions">
+          <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span id="bookmarkLabel">Зберегти</span>
+          </button>
+          <span class="share-label">Поділитись:</span>
+          <button class="share-btn sh-t" onclick="toast('Поділились у Twitter!')">Twitter</button>
+          <button class="share-btn sh-f" onclick="toast('Поділились у Facebook!')">Facebook</button>
+          <button class="share-btn sh-l" onclick="toast('Поділились у LinkedIn!')">LinkedIn</button>
+        </div>
+        <div class="comments-section" id="commentsSection"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="auth-bg" id="authModal" onclick="bgClose(event,'authModal')">
+  <div class="auth-card" id="loginForm">
+    <button class="modal-close-abs" onclick="closeModal('authModal')">&#x2715;</button>
+    <h2>Вхід до акаунту</h2>
+    <p>Ласкаво просимо до EconomiconNews</p>
+    <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="ваш@email.com"/><div class="err" id="loginErr"></div></div>
+    <div class="field"><label>Пароль</label><input type="password" id="loginPw" placeholder="••••••••"/></div>
+    <button class="btn-primary" id="loginBtn" onclick="doLogin()">Увійти</button>
+    <div style="text-align:center;margin-top:.7rem;font-size:.73rem;color:var(--text-ter)">Демо адмін: admin@economiconnews.ua / Admin2026!</div>
+    <p class="auth-switch">Немає акаунту? <a onclick="switchAuth('reg')">Зареєструватись</a></p>
+  </div>
+  <div class="auth-card" id="regForm" style="display:none">
+    <button class="modal-close-abs" onclick="closeModal('authModal')">&#x2715;</button>
+    <h2>Реєстрація</h2>
+    <p>Створіть акаунт EconomiconNews</p>
+    <div class="field"><label>Повне ім'я</label><input type="text" id="regName" placeholder="Іван Петренко"/></div>
+    <div class="field"><label>Email</label><input type="email" id="regEmail" placeholder="ваш@email.com"/><div class="err" id="regErr"></div></div>
+    <div class="field"><label>Пароль</label><input type="password" id="regPw" placeholder="Мінімум 6 символів"/></div>
+    <button class="btn-primary" id="regBtn" onclick="doRegister()">Зареєструватись</button>
+    <p class="auth-switch">Вже є акаунт? <a onclick="switchAuth('login')">Увійти</a></p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-bg" id="adminPanel" onclick="bgClose(event,'adminPanel')">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <h2>Адмін-панель EconomiconNews</h2>
+      <button class="admin-close" onclick="closeModal('adminPanel')">&#x2715;</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="adminTab('stats',this)">Статистика</button>
+        <button class="admin-tab" onclick="adminTab('articles',this)">Статті</button>
+        <button class="admin-tab" onclick="adminTab('new-article',this)">+ Нова стаття</button>
+        <button class="admin-tab" onclick="adminTab('users',this)">Користувачі</button>
+      </div>
+      <div id="adminContent"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let state = { cat: 'all', q: '', page: 1, per: 6 };
+let session = JSON.parse(localStorage.getItem('en_session') || 'null');
+// Migrate old sessions that don't have id — fetch it silently
+if (session && session.id === undefined) {
+  fetch('/api/auth/me', {headers: {'Authorization': 'Bearer ' + session.token}})
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { if (d) { session.id = d.id; localStorage.setItem('en_session', JSON.stringify(session)); } })
+    .catch(() => {});
+}
+let bookmarkIds = new Set();
+let currentArticleId = null;
+let searchTimer = null;
+let prevMarket = {};
+
+// ── DATE ──────────────────────────────────────────────────────────────────────
+(function(){
+  const d = new Date();
+  const days = ['Неділя','Понеділок','Вівторок','Середа','Четвер','П\'ятниця','Субота'];
+  const months = ['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'];
+  document.getElementById('topDate').textContent =
+    `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+})();
+
+// ── TICKER ───────────────────────────────────────────────────────────────────
+async function loadTicker() {
+  try {
+    const r = await fetch('/api/articles?per=12');
+    const d = await r.json();
+    buildTicker(d.articles || []);
+  } catch(e) {}
+}
+
+function buildTicker(articles) {
+  const track = document.getElementById('tickerTrack');
+  if (!articles.length) return;
+
+  // build one copy of items
+  const itemsHtml = articles.map(a =>
+    `<span class="ticker-item" onclick="openArticle(${a.id})">${esc(a.title)}</span>` +
+    `<span class="ticker-sep">&#xb7;</span>`
+  ).join('');
+
+  // duplicate for seamless loop
+  track.innerHTML = itemsHtml + itemsHtml;
+
+  // measure content width (half of total since doubled)
+  requestAnimationFrame(() => {
+    const totalW = track.scrollWidth;   // width of both copies
+    const speed  = 80;                  // px per second
+    const dur    = (totalW / 2) / speed;
+    track.style.setProperty('--ticker-dur', dur + 's');
+    track.classList.add('running');
+  });
+}
+
+// ── AUTH NAV ──────────────────────────────────────────────────────────────────
+function renderNavAuth() {
+  const el = document.getElementById('navAuth');
+  if (session) {
+    el.innerHTML = `
+      <div class="user-menu" id="userMenu">
+        <button class="nav-btn btn-user" onclick="toggleUserMenu()">
+          <span class="avatar">${session.name[0].toUpperCase()}</span>
+          ${session.name.split(' ')[0]}
+          ${session.role==='admin'
+            ? '<span style="background:var(--danger);color:#fff;border-radius:3px;font-size:.58rem;padding:.04rem .32rem;margin-left:.25rem;font-weight:700">ADMIN</span>'
+            : ''}
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <button class="user-dd-item" onclick="openBookmarks()">Мої закладки</button>
+          ${session.role==='admin' ? '<button class="user-dd-item" onclick="openAdmin()">Адмін-панель</button>' : ''}
+          <div class="user-dd-sep"></div>
+          <button class="user-dd-item danger" onclick="logout()">Вийти</button>
+        </div>
+      </div>`;
+  } else {
+    el.innerHTML = `
+      <button class="nav-btn btn-login" onclick="openAuth('login')">Увійти</button>
+      <button class="nav-btn btn-reg" onclick="openAuth('reg')">Реєстрація</button>`;
+  }
+}
+
+function toggleUserMenu() {
+  document.getElementById('userDropdown')?.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#userMenu')) document.getElementById('userDropdown')?.classList.remove('open');
+});
+
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function openAuth(mode) {
+  document.getElementById('loginForm').style.display = mode === 'login' ? 'block' : 'none';
+  document.getElementById('regForm').style.display   = mode === 'reg'   ? 'block' : 'none';
+  document.getElementById('loginErr').textContent = '';
+  document.getElementById('regErr').textContent   = '';
+  document.getElementById('authModal').classList.add('open');
+}
+function switchAuth(mode) {
+  document.getElementById('loginForm').style.display = mode === 'login' ? 'block' : 'none';
+  document.getElementById('regForm').style.display   = mode === 'reg'   ? 'block' : 'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pw    = document.getElementById('loginPw').value;
+  const btn   = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'Вхід...';
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, password: pw})
+    });
+    const d = await r.json();
+    if (!r.ok) { document.getElementById('loginErr').textContent = d.error; return; }
+    session = {token: d.token, name: d.name, role: d.role, id: d.id};
+    localStorage.setItem('en_session', JSON.stringify(session));
+    closeModal('authModal');
+    renderNavAuth();
+    loadBookmarkIds();
+    toast(`Вітаємо, ${d.name}!`);
+  } catch(e) { document.getElementById('loginErr').textContent = 'Помилка з\'єднання'; }
+  finally { btn.disabled = false; btn.textContent = 'Увійти'; }
+}
+
+async function doRegister() {
+  const name  = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pw    = document.getElementById('regPw').value;
+  const btn   = document.getElementById('regBtn');
+  btn.disabled = true; btn.textContent = 'Реєстрація...';
+  try {
+    const r = await fetch('/api/auth/register', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name, email, password: pw})
+    });
+    const d = await r.json();
+    if (!r.ok) { document.getElementById('regErr').textContent = d.error; return; }
+    session = {token: d.token, name: d.name, role: d.role, id: d.id};
+    localStorage.setItem('en_session', JSON.stringify(session));
+    closeModal('authModal');
+    renderNavAuth();
+    toast(`Акаунт створено, вітаємо ${d.name}!`);
+  } catch(e) { document.getElementById('regErr').textContent = 'Помилка з\'єднання'; }
+  finally { btn.disabled = false; btn.textContent = 'Зареєструватись'; }
+}
+
+function logout() {
+  session = null;
+  localStorage.removeItem('en_session');
+  bookmarkIds = new Set();
+  renderNavAuth();
+  toast('До побачення!');
+}
+
+function authHeader() {
+  return session ? {'Authorization': `Bearer ${session.token}`} : {};
+}
+
+// ── MARKET DATA ───────────────────────────────────────────────────────────────
+async function loadMarkets() {
+  try {
+    const r = await fetch('/api/markets');
+    if (!r.ok) return;
+    const d = await r.json();
+    renderTopbarMarkets(d);
+    renderSideMarkets(d);
+    document.getElementById('marketRefreshTime').textContent =
+      'оновлено ' + new Date().toLocaleTimeString('uk-UA', {hour: '2-digit', minute: '2-digit'});
+    prevMarket = d;
+  } catch(e) {
+    document.getElementById('sideMarkets').innerHTML = '<div class="market-loader">Помилка завантаження</div>';
+  }
+}
+
+function fmtChg(chg) {
+  if (chg == null) return '';
+  const s = chg >= 0 ? '+' : '';
+  return `<span class="topbar-chg ${chg >= 0 ? 'chg-up' : 'chg-dn'}">${s}${chg.toFixed(2)}%</span>`;
+}
+
+function renderTopbarMarkets(d) {
+  const usdChg = prevMarket.usd_uah
+    ? ((d.usd_uah - prevMarket.usd_uah) / prevMarket.usd_uah * 100)
+    : null;
+  const btcChg = d.btc_change ?? null;
+  const ethChg = d.eth_change ?? null;
+  document.getElementById('topbarMarkets').innerHTML = `
+    <span class="topbar-market">USD/UAH <span class="topbar-val">${d.usd_uah?.toFixed(2)}</span>${fmtChg(usdChg)}</span>
+    <span class="topbar-market">EUR/UAH <span class="topbar-val">${d.eur_uah?.toFixed(2)}</span></span>
+    <span class="topbar-market">BTC <span class="topbar-val">$${Number(d.btc_usd||0).toLocaleString()}</span>${fmtChg(btcChg)}</span>
+    <span class="topbar-market">ETH <span class="topbar-val">$${Number(d.eth_usd||0).toLocaleString()}</span>${fmtChg(ethChg)}</span>
+    <span class="topbar-market">Золото <span class="topbar-val">$${Number(d.gold_usd||0).toLocaleString()}</span></span>
+    <span class="market-updated">${d.updated_at || ''}</span>`;
+}
+
+function renderSideMarkets(d) {
+  const rows = [
+    ['USD/UAH',     d.usd_uah?.toFixed(4),                      null],
+    ['EUR/UAH',     d.eur_uah?.toFixed(4),                      null],
+    ['Bitcoin',     '$' + Number(d.btc_usd||0).toLocaleString(), d.btc_change],
+    ['Ethereum',    '$' + Number(d.eth_usd||0).toLocaleString(), d.eth_change],
+    ['Золото',      '$' + Number(d.gold_usd||0).toFixed(0),      null],
+    ['Нафта Brent', '$' + Number(d.oil_usd||0).toFixed(2),       null],
+  ];
+  document.getElementById('sideMarkets').innerHTML = rows.map(([name, val, chg]) => {
+    const up = chg != null ? chg >= 0 : Math.random() > 0.38;
+    const chgHtml = chg != null
+      ? `<span class="market-chg ${chg >= 0 ? 'chg-up-bg' : 'chg-dn-bg'}">${chg >= 0 ? '+' : ''}${chg.toFixed(2)}%</span>`
+      : '';
+    return `<div class="market-row">
+      <span class="market-name">${name}</span>
+      <div class="market-right"><span class="market-val ${up ? 'up' : 'dn'}">${val}</span>${chgHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── ARTICLES ──────────────────────────────────────────────────────────────────
+async function loadArticles() {
+  document.getElementById('newsGrid').innerHTML =
+    '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>' +
+    '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+
+  const params = new URLSearchParams({page: state.page, per: state.per});
+  if (state.cat !== 'all') params.set('category', state.cat);
+  if (state.q) params.set('q', state.q);
+
+  try {
+    const r = await fetch(`/api/articles?${params}`);
+    const d = await r.json();
+    renderGrid(d.articles, d.total, d.page, d.per);
+  } catch(e) {
+    document.getElementById('newsGrid').innerHTML =
+      '<div class="empty-state" style="grid-column:1/-1"><div class="icon">—</div><h3>Не вдалось завантажити новини</h3><p>Перевірте з\'єднання з сервером</p></div>';
+  }
+}
+
+// SVG icons for meta
+const iconAuthor = `<svg viewBox="0 0 24 24" stroke-width="2" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+const iconDate   = `<svg viewBox="0 0 24 24" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+const iconEye    = `<svg viewBox="0 0 24 24" stroke-width="2" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+
+function renderGrid(articles, total, page, per) {
+  const grid  = document.getElementById('newsGrid');
+  const hero  = document.getElementById('heroOuter');
+  const catH  = document.getElementById('catHeader');
+  const label = document.getElementById('gridLabel');
+  const isHome = state.cat === 'all' && !state.q;
+
+  if (isHome && articles.length > 0) {
+    // Full-width hero (first article)
+    const h = articles[0];
+    hero.style.display = 'block';
+    catH.style.display = 'none';
+    label.textContent  = 'Останні новини';
+    document.getElementById('heroImg').src             = h.img || '';
+    document.getElementById('heroCat').textContent     = h.category;
+    document.getElementById('heroTitle').textContent   = h.title;
+    document.getElementById('heroAuthor').textContent  = h.author;
+    document.getElementById('heroDate').textContent    = fmtDate(h.created_at);
+    document.getElementById('heroViews').textContent   = Number(h.views).toLocaleString() + ' переглядів';
+    document.getElementById('heroBlock').onclick = (e) => { e.preventDefault(); openArticle(h.id); };
+    // hero article ALSO appears first in grid (featured card style)
+  } else {
+    hero.style.display = 'none';
+    catH.style.display = state.cat !== 'all' ? 'block' : 'none';
+    if (state.cat !== 'all') setCatHeader(state.cat, total);
+    label.textContent = state.q
+      ? `Результати пошуку: "${state.q}"`
+      : `Всі матеріали — ${state.cat}`;
+  }
+
+  if (!articles.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="icon">—</div><h3>Нічого не знайдено</h3><p>Спробуйте іншу категорію або запит</p></div>';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  grid.innerHTML = articles.map(a => `
+    <a class="card" href="#" onclick="openArticle(${a.id});return false">
+      <img class="card-img" src="${a.img || ''}" alt="${esc(a.title)}" loading="lazy"/>
+      <div class="card-body">
+        <span class="cat-pill" onclick="event.stopPropagation();filterCat('${a.category}',null)">${a.category}</span>
+        <div class="card-title">${esc(a.title)}</div>
+        <div class="card-excerpt">${esc(a.excerpt || '')}</div>
+        <div class="card-meta">
+          <span class="meta-item">${iconAuthor} ${esc(a.author)}</span>
+          <span class="meta-item">${iconDate} ${fmtDate(a.created_at)}</span>
+          <span class="meta-item">${iconEye} ${Number(a.views).toLocaleString()}</span>
+        </div>
+      </div>
+    </a>`).join('');
+
+  // pagination
+  const pages = Math.ceil(total / per);
+  const pg = document.getElementById('pagination');
+  if (pages <= 1) { pg.innerHTML = ''; return; }
+  let html = '';
+  if (page > 1) html += `<button class="page-btn" onclick="goPage(${page - 1})">&#8249;</button>`;
+  for (let i = 1; i <= pages; i++) {
+    if (i === 1 || i === pages || Math.abs(i - page) <= 1)
+      html += `<button class="page-btn${i === page ? ' active' : ''}" onclick="goPage(${i})">${i}</button>`;
+    else if (Math.abs(i - page) === 2)
+      html += `<button class="page-btn" disabled>&#8230;</button>`;
+  }
+  if (page < pages) html += `<button class="page-btn" onclick="goPage(${page + 1})">&#8250;</button>`;
+  pg.innerHTML = html;
+}
+
+async function loadTrending() {
+  try {
+    const r = await fetch('/api/articles/trending');
+    const articles = await r.json();
+    document.getElementById('trendingList').innerHTML = articles.map((a, i) => `
+      <div class="trend-item" onclick="openArticle(${a.id})">
+        <span class="trend-num">${i + 1}</span>
+        <div class="trend-body">
+          <div class="trend-title">${esc(a.title)}</div>
+          <div class="trend-meta">${a.category} &nbsp;·&nbsp; ${Number(a.views).toLocaleString()} переглядів</div>
+        </div>
+      </div>`).join('');
+  } catch(e) {}
+}
+
+// ── OPEN ARTICLE (URL-routed page) ───────────────────────────────────────────
+async function openArticle(id) {
+  history.pushState({view: 'article', id}, '', '/article/' + id);
+  await showArticlePage(id);
+}
+
+async function showArticlePage(id) {
+  currentArticleId = id;
+  document.getElementById('heroOuter').style.display   = 'none';
+  document.getElementById('catHeader').style.display   = 'none';
+  document.querySelector('.main').style.display        = 'none';
+  document.getElementById('authorPage').style.display  = 'none';
+  document.getElementById('aboutPage').style.display   = 'none';
+  document.getElementById('articlePage').style.display = 'block';
+  window.scrollTo(0, 0);
+
+  document.getElementById('apTitle').textContent  = 'Завантаження...';
+  document.getElementById('apText').innerHTML     = '<div class="market-loader">...</div>';
+  document.getElementById('apMeta').innerHTML     = '';
+  document.getElementById('apTags').innerHTML     = '';
+  document.getElementById('apActions').innerHTML  = '';
+  document.getElementById('apComments').innerHTML = '';
+
+  try {
+    const r = await fetch(`/api/articles/${id}`, {headers: authHeader()});
+    const a = await r.json();
+
+    document.getElementById('apImg').src           = a.img || '';
+    document.getElementById('apImg').alt           = a.title;
+    document.getElementById('apCat').textContent   = a.category;
+    document.getElementById('apCat').dataset.cat   = a.category;
+    document.getElementById('apTitle').textContent = a.title;
+    document.title = a.title + ' — EconomiconNews';
+
+    document.getElementById('apMeta').innerHTML = `
+      <span class="meta-item">${iconAuthor} <a class="author-link" data-author="${esc(a.author)}" onclick="openAuthor(this.dataset.author);return false">${esc(a.author)}</a></span>
+      <span class="meta-item">${iconDate} <strong>${fmtDate(a.created_at)}</strong></span>
+      <span class="meta-item">${iconEye} <strong>${Number(a.views).toLocaleString()} переглядів</strong></span>
+      <span class="meta-item">
+        <svg viewBox="0 0 24 24" stroke-width="2" fill="none" style="width:12px;height:12px;stroke:currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <strong>${readTime(a.content)}</strong>
+      </span>`;
+
+    document.getElementById('apText').innerHTML =
+      a.content.split('\n\n').map(p => p.trim() ? `<p>${p.replace(/\n/g,'<br>')}</p>` : '').join('');
+
+    document.getElementById('apTags').innerHTML =
+      (a.tags || []).map(t => `<span class="ap-tag">${esc(t)}</span>`).join('');
+
+    const isBm = bookmarkIds.has(id);
+    document.getElementById('apActions').innerHTML = `
+      <button class="bookmark-btn${isBm ? ' saved' : ''}" id="apBookmarkBtn" onclick="toggleApBookmark()">
+        <svg viewBox="0 0 24 24" stroke-width="2" fill="none" style="width:13px;height:13px;stroke:currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <span id="apBookmarkLabel">${isBm ? 'Збережено' : 'Зберегти'}</span>
+      </button>
+      <span class="share-label">Поділитись:</span>
+      <button class="share-btn sh-t" onclick="toast('Поділились у Twitter!')">Twitter</button>
+      <button class="share-btn sh-f" onclick="toast('Поділились у Facebook!')">Facebook</button>
+      <button class="share-btn sh-l" onclick="toast('Поділились у LinkedIn!')">LinkedIn</button>`;
+
+    renderApComments(a.comments || [], id);
+    renderApSidebar();
+  } catch(e) {
+    document.getElementById('apText').innerHTML = '<p>Не вдалось завантажити статтю.</p>';
+  }
+}
+
+// ── ABOUT PAGE ────────────────────────────────────────────────────────────────
+function openAbout() {
+  history.pushState({view: 'about'}, '', '/about');
+  showAboutPage();
+}
+
+function showAboutPage() {
+  document.getElementById('heroOuter').style.display   = 'none';
+  document.getElementById('catHeader').style.display   = 'none';
+  document.querySelector('.main').style.display        = 'none';
+  document.getElementById('articlePage').style.display = 'none';
+  document.getElementById('authorPage').style.display  = 'none';
+  document.getElementById('aboutPage').style.display   = 'block';
+  document.title = 'Про нас — EconomiconNews';
+  window.scrollTo(0, 0);
+}
+
+function goBackFromAbout() {
+  showMainView();
+  history.replaceState({view: 'home'}, '', '/');
+}
+
+// ── AUTHOR PROFILE ────────────────────────────────────────────────────────────
+async function openAuthor(name) {
+  history.pushState({view: 'author', name}, '', '/profile/' + encodeURIComponent(name));
+  await showAuthorPage(name);
+}
+
+async function showAuthorPage(name) {
+  document.getElementById('heroOuter').style.display   = 'none';
+  document.getElementById('catHeader').style.display   = 'none';
+  document.querySelector('.main').style.display        = 'none';
+  document.getElementById('articlePage').style.display = 'none';
+  document.getElementById('aboutPage').style.display   = 'none';
+  document.getElementById('authorPage').style.display  = 'block';
+  window.scrollTo(0, 0);
+
+  // placeholder
+  document.getElementById('authorNameTitle').textContent = name;
+  document.getElementById('authorInitials').textContent  = name[0].toUpperCase();
+  document.getElementById('authorArticleCount').textContent = '...';
+  document.getElementById('authorViewCount').textContent    = '...';
+  document.getElementById('authorGrid').innerHTML =
+    '<div class="skeleton" style="grid-column:1/-1;height:140px"></div>';
+  document.title = name + ' — EconomiconNews';
+
+  try {
+    const r = await fetch(`/api/authors/${encodeURIComponent(name)}`);
+    const d = await r.json();
+    document.getElementById('authorArticleCount').textContent = d.article_count;
+    document.getElementById('authorViewCount').textContent    = Number(d.total_views).toLocaleString();
+    document.getElementById('authorGrid').innerHTML = d.articles.length
+      ? d.articles.map(a => `
+          <a class="card" href="#" onclick="openArticle(${a.id});return false">
+            <img class="card-img" src="${a.img||''}" alt="" loading="lazy"/>
+            <div class="card-body">
+              <span class="cat-pill">${esc(a.category)}</span>
+              <div class="card-title">${esc(a.title)}</div>
+              <div class="card-excerpt">${esc(a.excerpt||'')}</div>
+              <div class="card-meta">
+                <span class="meta-item">${iconDate} ${fmtDate(a.created_at)}</span>
+                <span class="meta-item">${iconEye} ${Number(a.views).toLocaleString()}</span>
+              </div>
+            </div>
+          </a>`).join('')
+      : '<div class="empty-state" style="grid-column:1/-1"><div class="icon">—</div><h3>Статей поки немає</h3></div>';
+  } catch(e) {
+    document.getElementById('authorGrid').innerHTML = '<p>Помилка завантаження.</p>';
+  }
+}
+
+function goBackFromAuthor() {
+  showMainView();
+  history.replaceState({view: 'home'}, '', '/');
+}
+
+function goBack() {
+  if (window.history.length > 1 && document.referrer.includes(window.location.host)) {
+    history.back();
+  } else {
+    showMainView();
+    history.replaceState({view: 'home'}, '', '/');
+  }
+}
+
+function showMainView() {
+  document.getElementById('articlePage').style.display = 'none';
+  document.getElementById('authorPage').style.display  = 'none';
+  document.getElementById('aboutPage').style.display   = 'none';
+  document.querySelector('.main').style.display        = 'grid';
+  document.title = 'EconomiconNews — Економічні новини України';
+  // _bookmarks is not a real API category, reset to home
+  if (state.cat === '_bookmarks') state = {cat:'all', q:'', page:1, per:6};
+  loadArticles();
+  window.scrollTo(0, 0);
+}
+
+function apFilterCat() {
+  const cat = document.getElementById('apCat').dataset.cat;
+  showMainView();
+  history.replaceState({view: 'home'}, '', '/');
+  filterCat(cat, null);
+}
+
+async function toggleApBookmark() {
+  if (!session) { openAuth('login'); return; }
+  try {
+    const r = await fetch(`/api/bookmarks/${currentArticleId}`, {method:'POST', headers:authHeader()});
+    const d = await r.json();
+    if (d.saved) bookmarkIds.add(currentArticleId);
+    else bookmarkIds.delete(currentArticleId);
+    const btn = document.getElementById('apBookmarkBtn');
+    const lbl = document.getElementById('apBookmarkLabel');
+    if (btn) btn.classList.toggle('saved', d.saved);
+    if (lbl) lbl.textContent = d.saved ? 'Збережено' : 'Зберегти';
+    toast(d.saved ? 'Додано до закладок' : 'Видалено із закладок');
+  } catch(e) {}
+}
+
+function renderApComments(comments, articleId) {
+  const sec = document.getElementById('apComments');
+  const formHtml = session
+    ? `<div class="comment-form">
+        <input type="text" id="apCommentInput" placeholder="Залишити коментар..."/>
+        <button onclick="postApComment(${articleId})">Надіслати</button>
+       </div>`
+    : `<p style="font-size:.79rem;color:var(--text-ter);margin-top:.75rem">
+        <a style="color:var(--blue);cursor:pointer" onclick="openAuth('login')">Увійдіть</a>, щоб залишити коментар
+       </p>`;
+  sec.innerHTML = `<h4>Коментарі (${comments.length})</h4>
+    ${comments.map(c => `
+      <div class="comment-item">
+        <div class="comment-avatar">${c.name[0].toUpperCase()}</div>
+        <div class="comment-body">
+          <div class="comment-name">${esc(c.name)}</div>
+          <div class="comment-text">${esc(c.text)}</div>
+          <div class="comment-date">${fmtDate(c.created_at)}</div>
+        </div>
+      </div>`).join('')}
+    ${formHtml}`;
+}
+
+async function postApComment(articleId) {
+  const input = document.getElementById('apCommentInput');
+  const text  = input.value.trim();
+  if (!text) return;
+  try {
+    const r = await fetch(`/api/articles/${articleId}/comments`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json', ...authHeader()},
+      body: JSON.stringify({text})
+    });
+    if (r.ok) { input.value = ''; await showArticlePage(articleId); toast('Коментар додано'); }
+  } catch(e) {}
+}
+
+function renderApSidebar() {
+  // copy current sidebar market HTML into article page sidebar
+  const sm = document.getElementById('sideMarkets');
+  const at = document.getElementById('apSideMarkets');
+  const tl = document.getElementById('trendingList');
+  const al = document.getElementById('apTrendingList');
+  if (sm && at) at.innerHTML = sm.innerHTML;
+  if (tl && al) al.innerHTML = tl.innerHTML;
+  const rt = document.getElementById('marketRefreshTime');
+  const ar = document.getElementById('apMarketTime');
+  if (rt && ar) ar.textContent = rt.textContent;
+}
+
+window.addEventListener('popstate', e => {
+  if (e.state?.view === 'article') {
+    showArticlePage(e.state.id);
+  } else if (e.state?.view === 'author') {
+    showAuthorPage(e.state.name);
+  } else if (e.state?.view === 'about') {
+    showAboutPage();
+  } else {
+    showMainView();
+  }
+});
+
+function filterCatFromModal() {}
+
+// ── BOOKMARKS ─────────────────────────────────────────────────────────────────
+async function loadBookmarkIds() {
+  if (!session) return;
+  try {
+    const r = await fetch('/api/bookmarks/ids', {headers: authHeader()});
+    const ids = await r.json();
+    bookmarkIds = new Set(ids);
+  } catch(e) {}
+}
+
+function renderBookmarkBtn(saved) {
+  document.getElementById('bookmarkBtn').classList.toggle('saved', saved);
+  document.getElementById('bookmarkLabel').textContent = saved ? 'Збережено' : 'Зберегти';
+}
+
+async function toggleBookmark() {
+  if (!session) { closeModal('articleModal'); openAuth('login'); return; }
+  try {
+    const r = await fetch(`/api/bookmarks/${currentArticleId}`, {method: 'POST', headers: authHeader()});
+    const d = await r.json();
+    if (d.saved) bookmarkIds.add(currentArticleId);
+    else bookmarkIds.delete(currentArticleId);
+    renderBookmarkBtn(d.saved);
+    toast(d.saved ? 'Додано до закладок' : 'Видалено із закладок');
+  } catch(e) {}
+}
+
+async function openBookmarks() {
+  document.getElementById('userDropdown')?.classList.remove('open');
+  if (!session) { openAuth('login'); return; }
+  try {
+    const r = await fetch('/api/bookmarks', {headers: authHeader()});
+    const articles = await r.json();
+    state = {cat: '_bookmarks', q: '', page: 1, per: 6};
+    document.getElementById('heroOuter').style.display = 'none';
+    document.getElementById('catHeader').style.display = 'none';
+    document.getElementById('gridLabel').textContent   = 'Мої закладки';
+    if (!articles.length) {
+      document.getElementById('newsGrid').innerHTML =
+        '<div class="empty-state" style="grid-column:1/-1"><div class="icon">—</div><h3>Закладок поки немає</h3><p>Зберігайте статті натиснувши кнопку у статті</p></div>';
+      document.getElementById('pagination').innerHTML = '';
+      return;
+    }
+    document.getElementById('newsGrid').innerHTML = articles.map(a => `
+      <a class="card" href="#" onclick="openArticle(${a.id});return false">
+        <img class="card-img" src="${a.img || ''}" alt="" loading="lazy"/>
+        <div class="card-body">
+          <span class="cat-pill">${a.category}</span>
+          <div class="card-title">${esc(a.title)}</div>
+          <div class="card-excerpt">${esc(a.excerpt || '')}</div>
+          <div class="card-meta">
+            <span class="meta-item">${iconAuthor} ${esc(a.author)}</span>
+            <span class="meta-item">${iconEye} ${Number(a.views).toLocaleString()}</span>
+          </div>
+        </div>
+      </a>`).join('');
+    document.getElementById('pagination').innerHTML = '';
+  } catch(e) {}
+}
+
+// ── COMMENTS ──────────────────────────────────────────────────────────────────
+function renderComments(comments, articleId) {
+  const sec = document.getElementById('commentsSection');
+  const formHtml = session
+    ? `<div class="comment-form">
+        <input type="text" id="commentInput" placeholder="Залишити коментар..."/>
+        <button onclick="postComment(${articleId})">Надіслати</button>
+       </div>`
+    : `<p style="font-size:.79rem;color:var(--text-ter);margin-top:.75rem">
+        <a style="color:var(--blue);cursor:pointer" onclick="closeModal('articleModal');openAuth('login')">Увійдіть</a>, щоб залишити коментар
+       </p>`;
+
+  sec.innerHTML = `<h4>Коментарі (${comments.length})</h4>
+    ${comments.map(c => `
+      <div class="comment-item">
+        <div class="comment-avatar">${c.name[0].toUpperCase()}</div>
+        <div class="comment-body">
+          <div class="comment-name">${esc(c.name)}</div>
+          <div class="comment-text">${esc(c.text)}</div>
+          <div class="comment-date">${fmtDate(c.created_at)}</div>
+        </div>
+      </div>`).join('')}
+    ${formHtml}`;
+}
+
+async function postComment(articleId) {
+  const input = document.getElementById('commentInput');
+  const text  = input.value.trim();
+  if (!text) return;
+  try {
+    const r = await fetch(`/api/articles/${articleId}/comments`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', ...authHeader()},
+      body: JSON.stringify({text})
+    });
+    if (r.ok) { input.value = ''; openArticle(articleId); toast('Коментар додано'); }
+  } catch(e) {}
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────────────────────
+function openAdmin() {
+  document.getElementById('userDropdown')?.classList.remove('open');
+  document.getElementById('adminPanel').classList.add('open');
+  adminTab('stats', document.querySelector('.admin-tab'));
+}
+
+async function adminTab(tab, btn) {
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const c = document.getElementById('adminContent');
+
+  if (tab === 'stats') {
+    try {
+      const r = await fetch('/api/admin/stats', {headers: authHeader()});
+      const d = await r.json();
+      c.innerHTML = `
+        <div class="stat-cards">
+          <div class="stat-card"><div class="val">${d.articles}</div><div class="lbl">Статей</div></div>
+          <div class="stat-card"><div class="val">${d.users}</div><div class="lbl">Користувачів</div></div>
+          <div class="stat-card"><div class="val">${Number(d.views).toLocaleString()}</div><div class="lbl">Переглядів</div></div>
+          <div class="stat-card"><div class="val">${d.bookmarks}</div><div class="lbl">Закладок</div></div>
+        </div>
+        <p style="font-size:.8rem;color:var(--text-ter);text-align:center">
+          Дані актуальні на ${new Date().toLocaleString('uk-UA')}
+        </p>`;
+    } catch(e) {}
+  }
+
+  if (tab === 'articles') {
+    try {
+      const r = await fetch('/api/admin/articles', {headers: authHeader()});
+      const rows = await r.json();
+      c.innerHTML = `<table class="admin-table">
+        <thead><tr><th>ID</th><th>Заголовок</th><th>Категорія</th><th>Автор</th><th>Перегляди</th><th>Статус</th><th>Дії</th></tr></thead>
+        <tbody>${rows.map(a => `<tr>
+          <td>${a.id}</td>
+          <td style="max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(a.title)}</td>
+          <td>${a.category}</td><td>${esc(a.author)}</td>
+          <td>${Number(a.views).toLocaleString()}</td>
+          <td><span class="${a.status === 'published' ? 'badge-pub' : 'badge-dft'}">${a.status === 'published' ? 'Опубліковано' : 'Чернетка'}</span></td>
+          <td>
+            <button class="act-btn act-edit" onclick="adminEditArticle(${a.id})">Ред.</button>
+            <button class="act-btn act-del" onclick="adminDeleteArticle(${a.id})">Вид.</button>
+          </td>
+        </tr>`).join('')}</tbody></table>`;
+    } catch(e) {}
+  }
+
+  if (tab === 'new-article') {
+    c.innerHTML = `<div class="admin-form">
+      <div><label>Заголовок</label><input type="text" id="af_title" placeholder="Заголовок статті"/></div>
+      <div><label>Анонс</label><input type="text" id="af_excerpt" placeholder="Короткий опис для картки"/></div>
+      <div class="form-row">
+        <div><label>Категорія</label>
+          <select id="af_cat">
+            <option>Ринки</option><option>Банки</option><option>Інвестиції</option>
+            <option>Крипто</option><option>Нерухомість</option><option>Технології</option>
+          </select>
+        </div>
+        <div><label>Автор</label><input type="text" id="af_author" placeholder="Ім'я автора"/></div>
+      </div>
+      <div><label>URL зображення</label><input type="text" id="af_img" placeholder="https://images.unsplash.com/..."/></div>
+      <div><label>Теги (через кому)</label><input type="text" id="af_tags" placeholder="НБУ, Ставка, Кредити"/></div>
+      <div><label>Текст статті</label><textarea id="af_content" rows="9" placeholder="Основний текст. Розділяйте абзаци порожнім рядком."></textarea></div>
+      <div style="display:flex;gap:.72rem;flex-wrap:wrap">
+        <button class="admin-save" onclick="adminSaveArticle()">Опублікувати</button>
+        <button class="admin-cancel" onclick="adminTab('articles',null)">Скасувати</button>
+      </div>
+    </div>`;
+  }
+
+  if (tab === 'users') {
+    try {
+      const r = await fetch('/api/admin/users', {headers: authHeader()});
+      window._adminAllUsers = await r.json();
+      c.innerHTML = `
+        <div style="margin-bottom:.9rem;display:flex;align-items:center;gap:.7rem;max-width:380px">
+          <div class="search-wrap" style="flex:1;position:relative">
+            <svg class="search-icon" viewBox="0 0 24 24" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Пошук за email..." id="adminUserSearch"
+              style="background:#f3f5f9;border:1.5px solid var(--divider);color:var(--text);border-radius:8px;padding:.42rem .85rem .42rem 2rem;font-size:.82rem;width:100%;outline:none;font-family:'Inter',sans-serif"
+              oninput="filterAdminUsers(this.value)"/>
+          </div>
+          <span id="adminUserCount" style="font-size:.75rem;color:var(--text-ter);white-space:nowrap">${window._adminAllUsers.length} кор.</span>
+        </div>
+        <div id="adminUsersTableWrap"></div>`;
+      renderAdminUsersTable(window._adminAllUsers);
+    } catch(e) {}
+  }
+}
+
+function renderAdminUsersTable(users) {
+  const wrap = document.getElementById('adminUsersTableWrap');
+  if (!wrap) return;
+  if (!users.length) {
+    wrap.innerHTML = '<div class="empty-state" style="padding:2rem"><h3>Нічого не знайдено</h3></div>';
+    return;
+  }
+  const isSuperAdmin = session && session.id === 1;
+  wrap.innerHTML = `<table class="admin-table">
+    <thead><tr><th>ID</th><th>Ім'я</th><th>Email</th><th>Роль</th><th>Реєстрація</th>${isSuperAdmin ? '<th>Дії</th>' : ''}</tr></thead>
+    <tbody>${users.map(u => {
+      const roleBtn = (isSuperAdmin && u.id !== 1)
+        ? `<button class="act-btn ${u.role === 'admin' ? 'act-del' : 'act-edit'}"
+             onclick="toggleUserRole(${u.id}, '${u.role}')"
+             title="${u.role === 'admin' ? 'Зняти адміна' : 'Зробити адміном'}">
+             ${u.role === 'admin' ? '− Адмін' : '+ Адмін'}
+           </button>`
+        : (u.id === 1 ? '<span style="font-size:.68rem;color:var(--text-ter)">Власник</span>' : '');
+      return `<tr>
+        <td>${u.id}</td><td>${esc(u.name)}</td><td>${esc(u.email)}</td>
+        <td><span class="${u.role === 'admin' ? 'badge-pub' : 'badge-dft'}">${u.role}</span></td>
+        <td>${fmtDate(u.created_at)}</td>
+        ${isSuperAdmin ? `<td>${roleBtn}</td>` : ''}
+      </tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+function filterAdminUsers(q) {
+  const all = window._adminAllUsers || [];
+  const filtered = q.trim()
+    ? all.filter(u => u.email.toLowerCase().includes(q.toLowerCase()) ||
+                      u.name.toLowerCase().includes(q.toLowerCase()))
+    : all;
+  const cnt = document.getElementById('adminUserCount');
+  if (cnt) cnt.textContent = filtered.length + ' кор.';
+  renderAdminUsersTable(filtered);
+}
+
+async function toggleUserRole(uid, currentRole) {
+  const action = currentRole === 'admin' ? 'зняти права адміна' : 'видати права адміна';
+  if (!confirm(`Ви впевнені що хочете ${action}?`)) return;
+  try {
+    const r = await fetch(`/api/admin/users/${uid}/role`, {
+      method: 'PATCH', headers: authHeader()
+    });
+    const d = await r.json();
+    if (!r.ok) { toast(d.error || 'Помилка'); return; }
+    toast(d.new_role === 'admin' ? 'Права адміна видано' : 'Права адміна знято');
+    // refresh list
+    const rr = await fetch('/api/admin/users', {headers: authHeader()});
+    window._adminAllUsers = await rr.json();
+    const q = document.getElementById('adminUserSearch')?.value || '';
+    filterAdminUsers(q);
+  } catch(e) { toast('Помилка з\'єднання'); }
+}
+
+async function adminSaveArticle() {
+  const title   = document.getElementById('af_title').value.trim();
+  const excerpt = document.getElementById('af_excerpt').value.trim();
+  const cat     = document.getElementById('af_cat').value;
+  const author  = document.getElementById('af_author').value.trim();
+  const img     = document.getElementById('af_img').value.trim();
+  const tags    = document.getElementById('af_tags').value.split(',').map(t => t.trim()).filter(Boolean);
+  const content = document.getElementById('af_content').value.trim();
+  if (!title || !content) { toast('Заповніть заголовок та текст'); return; }
+  try {
+    const r = await fetch('/api/articles', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', ...authHeader()},
+      body: JSON.stringify({title, excerpt, content, category: cat, author, img, tags, status: 'published'})
+    });
+    if (r.ok) {
+      toast('Статтю опубліковано');
+      adminTab('articles', null);
+      loadArticles();
+      loadTrending();
+      loadTicker();
+    }
+  } catch(e) { toast('Помилка збереження'); }
+}
+
+async function adminDeleteArticle(id) {
+  if (!confirm('Видалити статтю?')) return;
+  try {
+    await fetch(`/api/articles/${id}`, {method: 'DELETE', headers: authHeader()});
+    toast('Статтю видалено');
+    adminTab('articles', null);
+    loadArticles();
+    loadTicker();
+  } catch(e) {}
+}
+
+async function adminEditArticle(id) {
+  const r = await fetch(`/api/articles/${id}`);
+  const a = await r.json();
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('adminContent').innerHTML = `<div class="admin-form">
+    <div><label>Заголовок</label><input type="text" id="af_title" value="${esc(a.title)}"/></div>
+    <div><label>Анонс</label><input type="text" id="af_excerpt" value="${esc(a.excerpt || '')}"/></div>
+    <div class="form-row">
+      <div><label>Категорія</label>
+        <select id="af_cat">
+          ${['Ринки','Банки','Інвестиції','Крипто','Нерухомість','Технології'].map(cat =>
+            `<option${cat === a.category ? ' selected' : ''}>${cat}</option>`).join('')}
+        </select>
+      </div>
+      <div><label>Автор</label><input type="text" id="af_author" value="${esc(a.author)}"/></div>
+    </div>
+    <div><label>URL зображення</label><input type="text" id="af_img" value="${esc(a.img || '')}"/></div>
+    <div><label>Теги (через кому)</label><input type="text" id="af_tags" value="${(a.tags || []).join(', ')}"/></div>
+    <div><label>Текст статті</label><textarea id="af_content" rows="9">${esc(a.content)}</textarea></div>
+    <div><label>Статус</label>
+      <select id="af_status">
+        <option value="published"${a.status === 'published' ? ' selected' : ''}>Опубліковано</option>
+        <option value="draft"${a.status === 'draft' ? ' selected' : ''}>Чернетка</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:.72rem">
+      <button class="admin-save" onclick="adminUpdateArticle(${id})">Зберегти</button>
+      <button class="admin-cancel" onclick="adminTab('articles',null)">Скасувати</button>
+    </div>
+  </div>`;
+}
+
+async function adminUpdateArticle(id) {
+  const body = {
+    title:    document.getElementById('af_title').value.trim(),
+    excerpt:  document.getElementById('af_excerpt').value.trim(),
+    content:  document.getElementById('af_content').value.trim(),
+    category: document.getElementById('af_cat').value,
+    author:   document.getElementById('af_author').value.trim(),
+    img:      document.getElementById('af_img').value.trim(),
+    tags:     document.getElementById('af_tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    status:   document.getElementById('af_status').value,
+  };
+  await fetch(`/api/articles/${id}`, {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json', ...authHeader()},
+    body: JSON.stringify(body)
+  });
+  toast('Збережено');
+  adminTab('articles', null);
+  loadArticles();
+  loadTicker();
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function filterCat(cat, btn) {
+  // if article page is open, close it first
+  if (document.getElementById('articlePage').style.display !== 'none') {
+    document.getElementById('articlePage').style.display = 'none';
+    document.querySelector('.main').style.display        = 'grid';
+    document.title = 'EconomiconNews — Економічні новини України';
+    history.replaceState({view:'home'}, '', '/');
+  }
+  state = {cat, q: '', page: 1, per: 6};
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.nav-cat, .mob-cat').forEach(b => {
+    const t = b.textContent.trim();
+    b.classList.toggle('active',
+      (cat === 'all' && (t === 'Всі новини' || t === 'Всі')) ||
+      (cat !== 'all' && t === cat)
+    );
+  });
+  loadArticles();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function showHome() { filterCat('all', null); }
+
+function goPage(n) {
+  state.page = n;
+  loadArticles();
+  window.scrollTo({top: 200, behavior: 'smooth'});
+}
+
+function debounceSearch(q) {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    state.q = q; state.page = 1;
+    loadArticles();
+  }, 380);
+}
+
+const catMeta = {
+  'Ринки':       {icon: '↗', desc: 'Фондовий ринок, біржові котирування, аналітика'},
+  'Банки':       {icon: 'B',  desc: 'Банківський сектор, кредитування, монетарна політика НБУ'},
+  'Інвестиції':  {icon: '$',  desc: 'Інвестиційні можливості, фонди, програми відновлення'},
+  'Крипто':      {icon: '₿',  desc: 'Криптовалюти, блокчейн, DeFi, регулювання'},
+  'Нерухомість': {icon: 'Н',  desc: 'Ринок нерухомості, девелопери, іпотека, ціни'},
+  'Технології':  {icon: 'T',  desc: 'IT-індустрія, стартапи, цифрова трансформація'},
+};
+
+function setCatHeader(cat, total) {
+  const m = catMeta[cat] || {icon: '~', desc: ''};
+  document.getElementById('catIcon').textContent  = m.icon;
+  document.getElementById('catTitle').textContent = cat;
+  document.getElementById('catDesc').textContent  = m.desc;
+  document.getElementById('catCount').textContent = `${total} статей`;
+}
+
+// ── MISC ──────────────────────────────────────────────────────────────────────
+function subscribe() {
+  const e = document.getElementById('nlEmail').value.trim();
+  if (!e || !e.includes('@')) { toast('Введіть правильний email'); return; }
+  document.getElementById('nlEmail').value = '';
+  toast('Ви підписались на розсилку.');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function bgClose(e, id) {
+  if (e.target === document.getElementById(id)) closeModal(id);
+}
+
+let toastT;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtDate(s) {
+  if (!s) return '';
+  const d = new Date(s);
+  if (isNaN(d)) return s;
+  return d.toLocaleDateString('uk-UA', {day: 'numeric', month: 'short', year: 'numeric'});
+}
+
+function readTime(text) {
+  const words = (text || '').split(/\s+/).length;
+  return Math.max(1, Math.round(words / 200)) + ' хв читання';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['articleModal','authModal','adminPanel'].forEach(id => {
+      document.getElementById(id).classList.remove('open');
+    });
+    document.body.style.overflow = '';
+  }
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderNavAuth();
+loadTrending();
+loadMarkets();
+loadTicker();
+if (session) loadBookmarkIds();
+setInterval(loadMarkets, 5 * 60 * 1000);
+
+// URL-based routing on first load
+(function() {
+  const ma = window.location.pathname.match(/^\/article\/(\d+)$/);
+  const mp = window.location.pathname.match(/^\/profile\/(.+)$/);
+  if (ma) {
+    history.replaceState({view:'article', id:+ma[1]}, '', window.location.pathname);
+    showArticlePage(+ma[1]);
+  } else if (mp) {
+    const name = decodeURIComponent(mp[1]);
+    history.replaceState({view:'author', name}, '', window.location.pathname);
+    showAuthorPage(name);
+  } else if (window.location.pathname === '/about') {
+    history.replaceState({view:'about'}, '', '/about');
+    showAboutPage();
+  } else {
+    history.replaceState({view:'home'}, '', '/');
+    loadArticles();
+  }
+})();
+</script>
+</body>
+</html>
